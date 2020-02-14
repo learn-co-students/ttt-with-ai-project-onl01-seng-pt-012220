@@ -32,10 +32,10 @@ class Board
     end
 
     def full?
-        if !@cells.include?(" ")
-            true
-        else    
+        if @cells.include?(" ")
             false
+        else    
+            true
         end
     end
 
