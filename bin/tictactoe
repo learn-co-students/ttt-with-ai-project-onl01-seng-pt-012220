@@ -1,3 +1,51 @@
 #!/usr/bin/env ruby
 
 require_relative '../config/environment'
+game_board = Board.new
+game_board.display
+puts "Hello Welcom to Tic Tac Toe!"
+puts "How many players are there (0,1,2):"
+player_input = gets.strip.to_i
+if player_input == 0
+    puts "Would you like to use WarGame Program(y/n)"
+    war_input = gets.strip
+    if war_input == 'y'
+        x_wins = 0
+        o_wins = 0 
+        draws = 0
+        count = 0 
+        char1 = "X"
+        char2 = "O"
+        while count < 100
+            new_board = Board.new
+            game = Game.new(Players::Computer.new("X"), Players::Computer.new("O"), new_board)
+            game.play
+            if game.winner == "X"
+                x_wins +=1
+            elsif game.winner == "O"
+                o_wins +=1
+            else
+                draws +=1
+            end
+            count += 1
+        end
+        binding.pry
+        puts "X won #{x_wins} times, O won #{o_wins} times, and there were #{draws} draws.\n Play Again."
+        # temp_var = char2
+        # char2 = char1
+        # char1 = char2
+    else
+        game = Game.new(Players::Computer.new("X"), Players::Computer.new("O"), game_board)
+        game.play
+    end
+elsif player_input == 1
+    game = Game.new(Players::Human.new("X"), Players::Computer.new("O"), game_board)
+    game.play
+elsif player_input == 2
+    game = Game.new(Players::Human.new("X"), Players::Human.new("O"), game_board)
+    game.play  
+else
+    puts "invalid user input reload program"
+end
+puts "Thanks For Playing"
+
