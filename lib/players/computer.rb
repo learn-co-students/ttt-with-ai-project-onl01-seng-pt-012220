@@ -20,12 +20,22 @@ module Players
       #2) b) false check next combination
       #3) No combination was found -> random number
       
-      WIN_COMBINATIONS.each do {|combo|
-        if combo.count {|cell| board.cells[cell] == " "} == 1 && matching_two_out_of_three?(board, combo) 
+      #collects all teh combinations that are close to winning/loosing
+      all_combos_with_two_out_of_three = WIN_COMBINATIONS.select {|combo| combo.count {|cell| board.cells[cell] == " "} == 1 && matching_two_out_of_three?(board, combo)}
+
+      #Figures out if one of those combinations has a winning move for computer
+      all_combos_with_two_out_of_three.each {|combo|
+        #winning move
+        if combo.include?(self.token)
           return combo.detect{|cell| board.cells[cell] == " "} + 1
         end
+      }
+      #in no winning combination block other player
+      if !all_combos_with_two_out_of_three.empty?
+        return all_combos_with_two_out_of_three[rand(all_combos_with_two_out_of_three.size - 1)].detect{|cell| board.cells[cell] == " "} + 1
       end
-      rand(8) + 1
+    
+      rand(8) + 1  #Pick random move if no combintations
     end
   
     def matching_two_out_of_three?(board, combo)
